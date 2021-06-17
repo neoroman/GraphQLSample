@@ -1,0 +1,511 @@
+
+type AdminDepartment {
+    deptCode: String!
+    parentDeptCode: String!
+    parentDepartment: AdminDepartment
+    name: String!
+    type: String!
+    description: String
+    deptOrder: String!
+    status: String
+    """
+    createTime: unix timestamp 13자리(milli-second 포함)
+    """
+    createTime: String!
+    """
+    updateTime: unix timestamp 13자리(milli-second 포함)
+    """
+    updateTime: String
+}
+
+type AdminGroup {
+    id: Int!
+    name: String!
+    description: String
+    """
+    createTime: unix timestamp 13자리(milli-second 포함)
+    """
+    createTime: String!
+    """
+    updateTime: unix timestamp 13자리(milli-second 포함)
+    """
+    updateTime: String
+}
+
+type AdminGroupAuth {
+    groupId: Int!
+    roleId: Int!
+    authLevel: String
+}
+
+type AdminGroupMenuMap {
+    groupId: Int!
+    menuId: Int!
+}
+
+type AdminMenu {
+    id: Int!
+    parentId: Int
+    name: String!
+    type: String!
+    url: String
+    description: String
+    menuOrder: String!
+    """
+    createTime: unix timestamp 13자리(milli-second 포함)
+    """
+    createTime: String!
+    """
+    updateTime: unix timestamp 13자리(milli-second 포함)
+    """
+    updateTime: String
+}
+
+type AdminRole {
+    id: Int!
+    name: String!
+    description: String
+    """
+    createTime: unix timestamp 13자리(milli-second 포함)
+    """
+    createTime: String!
+    """
+    updateTime: unix timestamp 13자리(milli-second 포함)
+    """
+    updateTime: String
+}
+
+type AdminUser {
+    id: ID!
+    name: String!
+    # password: String!
+    groupId: Int!
+    group: AdminGroup
+    """
+    createTime: unix timestamp 13자리(milli-second 포함)
+    """
+    createTime: String!
+    """
+    updateTime: unix timestamp 13자리(milli-second 포함)
+    """
+    updateTime: String
+    email: String
+    department: String
+    rank: String
+    position: String
+    sex: String
+    address: String
+    officePhone: String
+    mobilePhone: String
+    familyPhone: String
+    executive: String
+    status: String
+    projectList: [Project]
+}
+
+type AnnualVacation {
+    id: Int!
+    userId: String!
+    userName: String
+    submitYear: String!
+    days: String
+    """
+    createDate: unix timestamp 13자리(milli-second 포함)
+    """
+    createDate: String!
+    """
+    updateDate: unix timestamp 13자리(milli-second 포함)
+    """
+    updateDate: String
+}
+
+
+type Board {
+    boardSeq: Int!
+    boardTitle: String
+    boardWriter: String!
+    boardContents: String
+    """
+    createTime: unix timestamp 13자리(milli-second 포함)
+    """
+    createTime: String
+    """
+    updateTime: unix timestamp 13자리(milli-second 포함)
+    """
+    updateTime: String
+    filename1: String
+    file1: String
+    ref: String
+    status: String
+    appraise: String
+    boardCode: String!
+    deptCode: String
+}
+
+type CategoryTimeCost {
+    createMonth: String!
+    category: Int!
+    total: Int!
+    salary: Int
+    bonus: Int
+    incentive: Int
+}
+
+type Code {
+    codeGroupValue: String!
+    codeValue: String!
+    codeName: String
+    description: String
+    codeOrder: Int!
+    status: String
+}
+
+type CodeGroup {
+    codeGroupValue: String!
+    codeGroupName: String
+    codeGroup: [Code]
+    description: String
+    status: String
+}
+
+type CommonVacation {
+    id: Int!
+    vacationType: String!
+    date: String!
+    duration: Float!
+    reason: String!
+    status: String!
+}
+
+type CongratulationCondolence {
+    congratulationSeq: Int!
+    userId: String!
+    createDate: String
+    submitDate: String!
+    target: String!
+    customerCompany: String
+    customerName: String
+    reason: String
+    useDate: String!
+    amount: Int
+    isWeath: Int
+    weathAddress: String
+    contact: String
+    fileName: String
+    status: String
+}
+
+
+type Expenditure {
+    expenditureSeq: Int!
+    userId: String!
+    projectId: Int
+    createDate: String
+    submitDate: String
+    purpose: String
+    useAmount: String
+    adjustedAmount: String
+    useDate: String
+    taxCode: String
+    status: String
+}
+
+type ExtraWork {
+    extraWorkSeq: Int!
+    userId: String!
+    createDate: String
+    useDate: String
+    useEndDate: String
+    workType: Int
+    workPlace: String
+    reason: String
+    fromTime: String
+    toTime: String
+    time: String
+    status: String
+    price: String
+}
+
+type Holiday {
+    holidayId: ID!
+    """
+    startDate: unix timestamp 13자리(milli-second 포함)
+    """
+    startDate: String
+    """
+    endDate: unix timestamp 13자리(milli-second 포함)
+    """
+    endDate: String
+    text: String
+    time: String
+    eday: String
+    length: String
+    sweek: String
+    sorder: String
+    firstChunk: String
+    lastChunk: String
+    pidTime: String
+    eventPid: String
+    eventLength: String
+    recPattern: String
+    recType: String
+    startDateT: String
+    endDateT: String
+}
+
+type InternalTrip {
+    internalSeq: Int!
+    """
+    businessDate: (String) YYYYMMDD 형태
+    """
+    businessDate: String
+    projectId: Int
+    projectCode: String
+    project: Project
+    userId: String
+    userName: String
+    user: AdminUser
+    businessPlace: String
+    attendance: String
+    leaving: String
+    attendanceRate: String
+    leavingRate: String
+    companion: String
+    companion3: String
+    companion2: String
+    parkingRate: String
+    roadRate: String
+    registerDate: String!
+    deptCode: String
+    attendanceCar: String
+    leavingCar: String
+    reductionRate: String
+    attendanceKm: String!
+    leavingKm: String!
+}
+
+type MapDeptGroup {
+    groupid: Int
+    deptCode: String
+    deptName: String
+}
+
+type Meal {
+    mealSeq: Int!
+    userId: String!
+    projectId: Int!
+    createDate: String
+    useDate: String
+    baseAmount: Float
+    useAmount: Float
+    requestAmount: Float
+    adjustedAmount: Float
+    remark: String
+    status: String
+    memberCount: Int!
+}
+
+type Project {
+    userId: String
+    projectId: Int!
+    name: String
+    deptCode: String
+    department: AdminDepartment
+    projectCode: String
+    status: String
+    taskList: [Tasks]
+}
+
+type ProjectReq {
+    projectId: Int!
+    createDate: String!
+    deptCode: String!
+    userId: String!
+    projectCode: String
+    intro: String
+    profit: Int
+    hwOut: Int
+    hwIn: Int
+    hwVendor: String
+    pkgOut: Int
+    pkgIn: Int
+    pkgVendor: String
+    devOut: Int
+    devIn: Int
+    devVendor: String
+    keepOut: Int
+    keepIn: Int
+    keepVendor: String
+    total: Int
+    netSales: Int
+    devMem: String
+    salesMem: String
+    status: String
+}
+
+type ProjectTimeCost {
+    createMonth: String!
+    deptCode: String!
+    projectId: Int!
+    total: Int
+    salary: Int
+    bonus: Int
+    incentive: Int
+}
+
+type ProjectTimeCostMap {
+    createMonth: String!
+    deptCode: String!
+    projectId: Int!
+    total: Int
+    salary: Int
+    bonus: Int
+    incentive: Int
+}
+
+type ProjectUserMap {
+    projectId: Int
+    userId: String!
+    status: String
+}
+
+type Tasks {
+    taskId: Int!
+    name: String
+    projectId: Int
+    status: String
+}
+
+type TaskMap {
+    userId: String!
+    taskId: Int!
+    projectId: Int
+    status: String
+}
+
+type Timetable { 
+    """
+    workDay: (String) YYYYMMDD 형태
+    """
+    workDay: String
+    workHour: Int
+    userId: String
+    taskId: Int
+    task: Tasks
+    projectId: Int
+    project: Project
+}
+
+type Training {
+    trainingSeq: Int!
+    userId: String!
+    projectId: Int!
+    project: Project
+    createDate: String
+    submitDate: String!
+    place: String
+    """
+    fromDate: unix timestamp 13자리(milli-second 포함)
+    """
+    fromDate: String!
+    """
+    toDate: unix timestamp 13자리(milli-second 포함)
+    """
+    toDate: String!
+    contents: String
+    object: String
+    amount: Float
+    how:String
+    area: String
+    fileName: String
+    status: String
+}
+
+type Vacation {
+    vacationSeq: Int!
+    userId: String!
+    user: AdminUser
+    vacationType: String
+    createDate: String
+    submitDate: String
+    reason: String
+    """
+    fromDate: unix timestamp 13자리(milli-second 포함)
+    """
+    fromDate: String
+    """
+    toDate: unix timestamp 13자리(milli-second 포함)
+    """
+    toDate: String
+    duration: Float
+    status: String
+    commonVacation: String
+}
+
+
+##################################################################
+type Query {
+    isLogin: Boolean!
+	getAdminDepartment(limit: Int = 200, offset: Int = 0): [AdminDepartment]
+	getAdminGroup(limit: Int = 200, offset: Int = 0): [AdminGroup]
+	getAdminGroupAuth(limit: Int = 200, offset: Int = 0): [AdminGroupAuth]
+	getAdminGroupMenuMap: [AdminGroupMenuMap]
+	getAdminMenu: [AdminMenu]
+	getAdminRole: [AdminRole]
+	getUserInfo(id: String!): [AdminUser]
+	getAnnualVacation(limit: Int = 200, offset: Int = 0): [AnnualVacation]
+	getBoard(limit: Int = 200, offset: Int = 0): [Board]
+	getCategoryTimeCost(limit: Int = 200, offset: Int = 0): [CategoryTimeCost]
+	getCodeGroup(groupId: String = "", limit: Int = 200, offset: Int = 0): [CodeGroup]
+	getCommonVacation(limit: Int = 200, offset: Int = 0): [CommonVacation]
+	getCongratulationCondolence(limit: Int = 200, offset: Int = 0): [CongratulationCondolence]
+	getExpenditure(limit: Int = 200, offset: Int = 0): [Expenditure]
+	getExtraWork(limit: Int = 200, offset: Int = 0): [ExtraWork]
+	getHoliday(limit: Int = 200, offset: Int = 0): [Holiday]
+	getInternalTrip(id: String!, date: String, limit: Int = 200, offset: Int = 0): [InternalTrip]
+	getMapDeptGroup(limit: Int = 200, offset: Int = 0): [MapDeptGroup]
+	getMeal(limit: Int = 200, offset: Int = 0): [Meal]
+	getProject(id: Int!, userId: String, limit: Int = 200, offset: Int = 0): [Project]
+	getProjectReq(limit: Int = 200, offset: Int = 0): [ProjectReq]
+	getProjectTimeCost(limit: Int = 200, offset: Int = 0): [ProjectTimeCost]
+	getProjectTimeCostMap(limit: Int = 200, offset: Int = 0): [ProjectTimeCostMap]
+	getProjectUserMap(userId: String!, limit: Int = 200, offset: Int = 0): [ProjectUserMap]
+	getTasks(id: Int!, limit: Int = 200, offset: Int = 0): [Tasks]
+	getUserTask(userId: String, limit: Int = 200, offset: Int = 0): [TaskMap]
+	getTimetable(id: String!, date: String, limit: Int = 200, offset: Int = 0): [Timetable]
+	getTraining(limit: Int = 200, offset: Int = 0): [Training]
+	getVacation(id: String!, date: String, limit: Int = 200, offset: Int = 0): [Vacation]
+}
+type Mutation {
+    # signup(username: String!, pwd: String!): Boolean!
+    login(username: String!, pwd: String!): Boolean!
+    """
+    사용자 정보 수정
+    """
+    putUserInfo(id: String!, password: String, department: String, address: String, officePhone: String, mobilePhone: String, familyPhone: String): AdminUser
+    """
+    작업 시간 입력
+    params
+        (Madatory) workDay: String => YYYYMMDD 형식
+    """
+    putWorkTime(userId: String!, workDay: String!, projectId: Int!, taskId: Int!, workHour: Int!): Timetable
+    """
+    휴가 입력
+    params
+        (Madatory) fromDate: String => YYYY-MM-DD 형식
+        (Madatory) toDate: String => YYYY-MM-DD 형식
+        (Optional) duration: Double => 1, 0.5 등
+        (Optional) commonVacation: String => 1, 2 (?)
+        (Optional) vacationType: String =>  D00102 연차  <default>
+                                            D00104 경조사
+                                            D00105 공가
+                                            D00108 공가(오전)
+                                            D00109 공가(오후)
+                                            D00110 반차(오전)
+                                            D00111 반차(오후)
+                                            D00112 휴직
+        (Optional) status: String =>    C002003 품의신청 <default>
+                                        C001003 품의완료
+    """
+    putVacation(userId: String!, reason: String!, duration: Float, fromDate: String!, toDate: String!, commonVacation: String = "1", vacationType: String = "D00102", status: String = "C002003"): Vacation
+}

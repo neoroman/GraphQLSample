@@ -1,0 +1,24 @@
+{
+  "PORT": 4000,
+  "SECRET": "my_secret",
+  "keyFile": "./ssl/_wildcard_boan_com_SHA256WITHRSA.key",
+  "certFile": "./ssl/_wildcard_boan_com.crt",
+  "development": {
+    "username": "root",
+    "password": "qwer1234",
+    "database": "boan_local",
+    "host": "127.0.0.1",
+    "port": "3306",
+    "dialect": "mysql",
+    "define": {
+      "freezeTableName": true,
+      "timestamps": false
+    },
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  }
+}
