@@ -37,16 +37,22 @@ const server = new GraphQLServer({
     //   const token = sess['token'];
     if (req.request.headers) {
       const token = req.request.headers.token;
-      try {
-        const currentSession =  jwt.verify(token, SECRET);
-        console.log("Session => " + JSON.stringify(currentSession));
-        if (!currentSession.user) throw new AuthenticationError('you must be logged in');
-        return currentSession;
-      } catch(err) {
-        return null;
+      if (token) {
+        try {
+          const currentSession =  jwt.verify(token, SECRET);
+          console.log("Session => " + JSON.stringify(currentSession));
+          if (!currentSession.user) throw new AuthenticationError('you must be logged in');
+          return currentSession;
+        } catch(err) {
+          return null;
+        }
+      } else {
+        return new Error('you must be logged in');
       }
+    } else {
+      return new Error('you must be logged in');
     }
-    return new Error('you must be logged in');
+    
   }
 });
 
