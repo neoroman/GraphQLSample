@@ -2,15 +2,15 @@
   "name": "GraphQLSample",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "dependencies": {
     "express-session": "^1.16.2",
-    "graphql-yoga": "^1.17.4",
+    "graphql-yoga": "^1.18.3",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^1.6.5",
-    "sequelize": ">=6.0.0",
-    "jsonwebtoken": "^8.5.1"
+    "sequelize": ">=6.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1"
