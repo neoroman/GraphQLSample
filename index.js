@@ -30,18 +30,18 @@ const options = {
 const server = new GraphQLServer({ 
   typeDefs: __dirname + "/graphql/schema.graphql", 
   resolvers,
-  context: async ({ req }) => {
-    console.log("Req => " + req);
-    if (sess && sess.hasOwnProperty('token')) {  
-      const token = sess['token'];
-  
+  context:  (req) => {
+    console.log("Req => " + req.request);
+    console.log("Req Header Token => " + req.request.headers.token);
+    // if (sess && sess.hasOwnProperty('token')) {  
+    //   const token = sess['token'];
+    if (req.request.headers) {
+      const token = req.request.headers.token;
       try {
-        const currentSession = await jwt.verify(token, SECRET);
-
-        console.log("Session => " + currentSession);
+        const currentSession =  jwt.verify(token, SECRET);
+        console.log("Session => " + JSON.stringify(currentSession));
         if (!currentSession.user) throw new AuthenticationError('you must be logged in');
-
-        return sess;
+        return currentSession;
       } catch(err) {
         return null;
       }
@@ -52,6 +52,7 @@ const server = new GraphQLServer({
 
 const app = server.express;
 const router = express.Router()
+app.use(express.json()) // for parsing application/json
 app.use('/', router)
 
 // session middleware
@@ -74,9 +75,9 @@ app.post('/secure', function(req, res) {
     console.log(token);
     res.json({ token: token });
 
-    sess = req.session;
-    sess.token = token;
-    sess.user = { id: body.id };
+    // sess = req.session;
+    // sess.token = token;
+    // sess.user = { id: body.id };
 });
 // Refer to https://stackoverflow.com/a/48476897
 app.post('/secure/check', function(req, res) {

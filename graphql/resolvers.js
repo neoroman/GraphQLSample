@@ -44,8 +44,8 @@ const resolvers = {
     Query: {
         isLogin: async (parent, args, context, info) => {
             try {
-                const deToken = await jwt.verify(context.token, SECRET);
-                console.log("Decoded Token => " + deToken);        
+                // const deToken = await jwt.verify(context.token, SECRET);
+                // console.log("Decoded Token => " + deToken);        
         
                 return typeof deToken.user !== 'undefined';
             } catch(err) {
