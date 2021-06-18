@@ -9,9 +9,6 @@ const fs = require("fs");
 const config = require(__dirname + '/config/config.json');
 const PORT = config.PORT;
 const SECRET = config.SECRET;
-// const privateKey = fs.readFileSync(config.keyFile);
-// const certificate = fs.readFileSync(config.certFile);
-var sess = null;
 
 const options = {
   port: PORT,
@@ -20,12 +17,17 @@ const options = {
   cors: {
     credentials: true,
     origin: ["http://localhost:5000"] // your frontend url.
-  },
-  // https: {
-  //   cert: certificate,
-  //   key: privateKey
-  // },
+  }
 };
+if (fs.existsSync(__dirname + "/ssl")
+  && process.env.NODE_ENV !== 'development') {
+  const privateKey = fs.readFileSync(config.keyFile);
+  const certificate = fs.readFileSync(config.certFile);
+  options['https'] = {
+    cert: certificate,
+    key: privateKey
+  }
+}
 
 const server = new GraphQLServer({ 
   typeDefs: __dirname + "/graphql/schema.graphql", 
@@ -33,8 +35,7 @@ const server = new GraphQLServer({
   context:  (req) => {
     console.log("Req => " + req.request);
     console.log("Req Header Token => " + req.request.headers.token);
-    // if (sess && sess.hasOwnProperty('token')) {  
-    //   const token = sess['token'];
+
     if (req.request.headers) {
       const token = req.request.headers.token;
       if (token) {
@@ -80,10 +81,6 @@ app.post('/secure', function(req, res) {
 
     console.log(token);
     res.json({ token: token });
-
-    // sess = req.session;
-    // sess.token = token;
-    // sess.user = { id: body.id };
 });
 // Refer to https://stackoverflow.com/a/48476897
 app.post('/secure/check', function(req, res) {
