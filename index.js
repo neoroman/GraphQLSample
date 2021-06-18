@@ -9,9 +9,6 @@ const fs = require("fs");
 const config = require(__dirname + '/config/config.json');
 const PORT = config.PORT;
 const SECRET = config.SECRET;
-// const privateKey = fs.readFileSync(config.keyFile);
-// const certificate = fs.readFileSync(config.certFile);
-var sess = null;
 
 const options = {
   port: PORT,
@@ -20,12 +17,17 @@ const options = {
   cors: {
     credentials: true,
     origin: ["http://localhost:5000"] // your frontend url.
-  },
-  // https: {
-  //   cert: certificate,
-  //   key: privateKey
-  // },
+  }
 };
+if (fs.existsSync(__dirname + "/ssl")
+  && process.env.NODE_ENV !== 'development') {
+  const privateKey = fs.readFileSync(config.keyFile);
+  const certificate = fs.readFileSync(config.certFile);
+  options['https'] = {
+    cert: certificate,
+    key: privateKey
+  }
+}
 
 // middleware of check jwt
 function checkJwt(req, res, next) {
@@ -55,6 +57,26 @@ const server = new GraphQLServer({
     console.log("Req => " + req.request);
     console.log("Req User => " + req.request.user);
     return {user: req.request.user};
+    
+    // console.log("Req Header Token => " + req.request.headers.token);
+    // if (req.request.headers) {
+    //   const token = req.request.headers.token;
+    //   if (token) {
+    //     try {
+    //       const currentSession =  jwt.verify(token, SECRET);
+    //       console.log("Session => " + JSON.stringify(currentSession));
+    //       if (!currentSession.user) throw new AuthenticationError('you must be logged in');
+    //       return currentSession;
+    //     } catch(err) {
+    //       return null;
+    //     }
+    //   } else {
+    //     return new Error('you must be logged in');
+    //   }
+    // } else {
+    //   return new Error('you must be logged in');
+    // }
+    
   }
 });
 
@@ -90,10 +112,6 @@ app.post('/secure', function(req, res) {
 
     console.log(token);
     res.json({ token: token });
-
-    // sess = req.session;
-    // sess.token = token;
-    // sess.user = { id: body.id };
 });
 // Refer to https://stackoverflow.com/a/48476897
 app.post('/secure/check', function(req, res) {
