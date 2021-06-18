@@ -47,7 +47,7 @@ const resolvers = {
                 // const deToken = await jwt.verify(context.token, SECRET);
                 // console.log("Decoded Token => " + deToken);        
         
-                return typeof deToken.user !== 'undefined';
+                return typeof context.user !== 'undefined';
             } catch(err) {
                 return false;
             }
