@@ -46,10 +46,10 @@ const resolvers = {
             try {
                 // const deToken = await jwt.verify(context.token, SECRET);
                 // console.log("Decoded Token => " + deToken);        
-        
                 return typeof context.user !== 'undefined';
             } catch(err) {
-                return false;
+                throw err;
+                // return false;
             }
         },
         getAdminDepartment: async (parent, args, context, info) => {

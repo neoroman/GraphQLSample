@@ -27,39 +27,36 @@ const options = {
   // },
 };
 
+// middleware of check jwt
+function checkJwt(req, res, next) {
+  if (req.headers) {
+    const token = req.headers.token;
+    try {
+      const currentSession =  jwt.verify(token, SECRET);
+      console.log("Session => " + JSON.stringify(currentSession));
+      
+      if (!currentSession.user) {
+        throw new AuthenticationError('you must be logged in 1');
+      }
+      req.user = currentSession.user;
+    } catch(err) {
+      throw new Error(`you must be logged in (${err})`);
+    }
+  } else {
+    throw new Error(`you must be logged in (${err})`);
+  }
+  next(); 
+}
+
 const server = new GraphQLServer({ 
   typeDefs: __dirname + "/graphql/schema.graphql", 
   resolvers,
   context:  (req) => {
     console.log("Req => " + req.request);
-    console.log("Req Header Token => " + req.request.headers.token);
-    // if (sess && sess.hasOwnProperty('token')) {  
-    //   const token = sess['token'];
-    if (req.request.headers) {
-      const token = req.request.headers.token;
-      if (token) {
-        try {
-          const currentSession =  jwt.verify(token, SECRET);
-          console.log("Session => " + JSON.stringify(currentSession));
-          if (!currentSession.user) throw new AuthenticationError('you must be logged in');
-          return currentSession;
-        } catch(err) {
-          return null;
-        }
-      } else {
-        return new Error('you must be logged in');
-      }
-    } else {
-      return new Error('you must be logged in');
-    }
-    
+    console.log("Req User => " + req.request.user);
+    return {user: req.request.user};
   }
 });
-
-const app = server.express;
-const router = express.Router()
-app.use(express.json()) // for parsing application/json
-app.use('/', router)
 
 // session middleware
 server.use(session({
@@ -73,6 +70,19 @@ server.use(session({
   },
 }));
 
+
+const app = server.express;
+const router = express.Router()
+app.use(express.json()) // for parsing application/json
+app.use('/', router)
+
+// jwt credential 
+app.use(options.endpoint, checkJwt);
+app.use(options.endpoint, (err, req, res, next) => {
+    if (err) return res.status(401).send(err.message);
+    next();
+  }
+)
 // Refer to https://stackoverflow.com/a/48476897
 app.post('/secure', function(req, res) {
     const body = req.body;
